@@ -8,7 +8,8 @@
         public GridValue[,] Grid { get; }
         public GridDirection Dir { get; private set; }
         public int Score { get; private set; }
-        public bool IsGameOver { get; private set; }
+        public bool IsGameOver { get; private set; } = false;
+        public bool IsPaused { get; set; } = false;
 
         private readonly LinkedList<GridDirection> directionChanges = new LinkedList<GridDirection>();
         private readonly LinkedList<GridPosition> snakePositions = new LinkedList<GridPosition>();

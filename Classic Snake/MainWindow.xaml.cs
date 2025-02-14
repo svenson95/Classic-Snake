@@ -64,6 +64,10 @@ public partial class MainWindow : Window
 
         switch (e.Key)
         {
+            case Key.Escape:
+            case Key.Space:
+                TogglePause();
+                break;
             case Key.Left:
                 gameState.ChangeDirection(GridDirection.Left);
                 break;
@@ -92,6 +96,11 @@ public partial class MainWindow : Window
             await RunGame();
             isGameRunning = false;
         }
+
+        if (gameState.IsPaused)
+        {
+            TogglePause();
+        }
     }
 
     private async Task GameLoop()
@@ -99,9 +108,12 @@ public partial class MainWindow : Window
         while (!gameState.IsGameOver)
         {
             await Task.Delay(200);
+            if (!gameState.IsPaused)
+            {
             gameState.Move();
             Draw();
         }
+    }
     }
 
     private Image[,] SetupGrid()
@@ -177,6 +189,21 @@ public partial class MainWindow : Window
         {
             OverlayText.Text = i.ToString();
             await Task.Delay(1000);
+        }
+    }
+
+    private void TogglePause()
+    {
+        if (gameState.IsPaused)
+        {
+            gameState.IsPaused = false;
+            Overlay.Visibility = Visibility.Hidden;
+        }
+        else
+        {
+            gameState.IsPaused = true;
+            Overlay.Visibility = Visibility.Visible;
+            OverlayText.Text = "Press any key to continue.";
         }
     }
 
