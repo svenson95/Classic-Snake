@@ -7,7 +7,7 @@
 
         public GridValue[,] Grid { get; }
         public GridDirection CurrentDirection { get; private set; }
-        public int Score { get; private set; }
+        public int Score { get; private set; } = 3;
         public bool IsGameOver { get; private set; } = false;
         public bool IsPaused { get; set; } = false;
 
