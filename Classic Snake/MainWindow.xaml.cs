@@ -11,25 +11,10 @@ namespace Classic_Snake;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly Dictionary<GridValue, ImageSource> gridValueToImage = new()
-    {
-        { GridValue.EMPTY, Images.Empty },
-        { GridValue.SNAKE, Images.Body },
-        { GridValue.FOOD, Images.Food }
-    };
-
-    private readonly Dictionary<GridDirection, int> directionToRotation = new()
-    {
-        { GridDirection.Up, 0 },
-        { GridDirection.Right, 90 },
-        { GridDirection.Down, 180 },
-        { GridDirection.Left, 270 },
-    };
-
     private readonly int rows = 15, cols = 15;
     private readonly Image[,] gridImages;
     private GameState gameState;
-    private bool isGameRunning;
+    private bool isGameStarted;
 
     public MainWindow()
     {
@@ -38,7 +23,7 @@ public partial class MainWindow : Window
         gameState = new GameState(rows, cols);
     }
 
-    private async Task RunGame()
+    private async Task StartGame()
     {
         Draw();
         await ShowGameStart();
@@ -87,11 +72,11 @@ public partial class MainWindow : Window
             e.Handled = true;
         }
 
-        if (!isGameRunning)
+        if (!isGameStarted)
         {
-            isGameRunning = true;
-            await RunGame();
-            isGameRunning = false;
+            isGameStarted = true;
+            await StartGame();
+            isGameStarted = false;
         }
 
         if (gameState.IsPaused)
@@ -152,7 +137,13 @@ public partial class MainWindow : Window
             for (int c = 0; c < cols; c++)
             {
                 GridValue gridValue = gameState.Grid[r, c];
-                gridImages[r, c].Source = gridValueToImage[gridValue];
+                Dictionary<GridValue, ImageSource> imageSource = new()
+                {
+                    { GridValue.EMPTY, Images.Empty },
+                    { GridValue.SNAKE, Images.Body },
+                    { GridValue.FOOD, Images.Food }
+                };
+                gridImages[r, c].Source = imageSource[gridValue];
                 gridImages[r, c].RenderTransform = Transform.Identity;
             }
         }
@@ -177,7 +168,14 @@ public partial class MainWindow : Window
         Image image = gridImages[headPosition.Row, headPosition.Col];
         image.Source = Images.Head;
 
-        int rotation = directionToRotation[gameState.Dir];
+        Dictionary<GridDirection, int> rotationValue = new()
+        {
+            { GridDirection.Up, 0 },
+            { GridDirection.Right, 90 },
+            { GridDirection.Down, 180 },
+            { GridDirection.Left, 270 },
+        };
+        int rotation = rotationValue[gameState.CurrentDirection];
         image.RenderTransform = new RotateTransform(rotation);
     }
 
@@ -191,11 +189,11 @@ public partial class MainWindow : Window
     }
 
     private void PauseGame()
-        {
-            gameState.IsPaused = true;
-            Overlay.Visibility = Visibility.Visible;
-            OverlayText.Text = "Press any key to continue.";
-        }
+    {
+        gameState.IsPaused = true;
+        Overlay.Visibility = Visibility.Visible;
+        OverlayText.Text = "Press any key to continue.";
+    }
 
     private async Task ShowGameOver()
     {

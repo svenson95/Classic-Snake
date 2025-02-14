@@ -6,7 +6,7 @@
         public int Cols { get; }
 
         public GridValue[,] Grid { get; }
-        public GridDirection Dir { get; private set; }
+        public GridDirection CurrentDirection { get; private set; }
         public int Score { get; private set; }
         public bool IsGameOver { get; private set; } = false;
         public bool IsPaused { get; set; } = false;
@@ -20,7 +20,7 @@
             Rows = rows;
             Cols = cols;
             Grid = new GridValue[rows, cols];
-            Dir = GridDirection.Right;
+            CurrentDirection = GridDirection.Right;
             AddSnake();
             AddFood();
         }
@@ -95,7 +95,7 @@
         {
             if (directionChanges.Count == 0)
             {
-                return Dir;
+                return CurrentDirection;
             }
 
             return directionChanges.Last.Value;
@@ -144,11 +144,11 @@
         {
             if (directionChanges.Count > 0)
             {
-                Dir = directionChanges.First.Value;
+                CurrentDirection = directionChanges.First.Value;
                 directionChanges.RemoveFirst();
             }
 
-            GridPosition newHeadPos = HeadPosition().Translate(Dir);
+            GridPosition newHeadPos = HeadPosition().Translate(CurrentDirection);
             GridValue moveResult = MoveResult(newHeadPos);
 
             if (moveResult == GridValue.OUTSIDE || moveResult == GridValue.SNAKE)
