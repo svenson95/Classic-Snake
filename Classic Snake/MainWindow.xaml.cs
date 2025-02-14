@@ -62,15 +62,19 @@ public partial class MainWindow : Window
                 TogglePause();
                 break;
             case Key.Left:
+            case Key.A:
                 gameState.ChangeDirection(GridDirection.Left);
                 break;
             case Key.Right:
+            case Key.D:
                 gameState.ChangeDirection(GridDirection.Right);
                 break;
             case Key.Up:
+            case Key.W:
                 gameState.ChangeDirection(GridDirection.Up);
                 break;
             case Key.Down:
+            case Key.S:
                 gameState.ChangeDirection(GridDirection.Down);
                 break;
         }
