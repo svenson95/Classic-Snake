@@ -7,6 +7,7 @@
 
         public GridValue[,] Grid { get; }
         public GridDirection CurrentDirection { get; private set; }
+        public int MoveDelay = 200;
         public int Score { get; private set; } = 3;
         public int Moves { get; private set; } = 0;
         public System.Timers.Timer Timer;

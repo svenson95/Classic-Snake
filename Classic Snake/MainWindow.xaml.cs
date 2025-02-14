@@ -91,15 +91,29 @@ public partial class MainWindow : Window
     }
 
     private async Task GameLoop()
-    { 
+    {
         while (!gameState.IsGameOver)
         {
-            await Task.Delay(200);
+            await Task.Delay(gameState.MoveDelay);
             if (!gameState.IsPaused)
             {
                 gameState.Move();
                 Draw();
+                IncreaseSpeed();
             }
+        }
+    }
+
+    private void IncreaseSpeed()
+    {
+        if (gameState.Score >= 5 && gameState.MoveDelay == 200)
+        {
+            gameState.MoveDelay -= 50;
+        }
+
+        if (gameState.Score >= 10 && gameState.MoveDelay == 150)
+        {
+            gameState.MoveDelay -= 50;
         }
     }
 
