@@ -8,6 +8,9 @@
         public GridValue[,] Grid { get; }
         public GridDirection CurrentDirection { get; private set; }
         public int Score { get; private set; } = 3;
+        public int Moves { get; private set; } = 0;
+        public System.Timers.Timer Timer;
+        public int ElapsedTime = 0;
         public bool IsGameOver { get; private set; } = false;
         public bool IsPaused { get; set; } = false;
 
@@ -165,6 +168,11 @@
                 AddHead(newHeadPos);
                 Score++;
                 AddFood();
+            }
+
+            if (moveResult == GridValue.EMPTY || moveResult == GridValue.FOOD)
+            {
+                Moves++;
             }
         }
     }

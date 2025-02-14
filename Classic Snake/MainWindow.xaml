@@ -22,10 +22,26 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="ScoreText" 
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Text="Score"
+               FontSize="20"
+               Margin="20"
+               />
+
+            <TextBlock x:Name="TimerText" 
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Text="SCORE 0"
-               FontSize="22"
+               Text="00:00"
+               FontSize="20"
+               Margin="20"
+               />
+
+            <TextBlock x:Name="MoveText" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Text="Moves 0"
+               FontSize="20"
                Margin="20"
                />
 

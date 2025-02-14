@@ -1,4 +1,5 @@
 ﻿using Classic_Snake.classes;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,6 +29,8 @@ public partial class MainWindow : Window
         Draw();
         await ShowGameStart();
         Overlay.Visibility = Visibility.Hidden;
+        StartTimer();
+
         await GameLoop();
         await ShowGameOver();
         gameState = new GameState(rows, cols);
@@ -82,6 +85,7 @@ public partial class MainWindow : Window
         if (gameState.IsPaused)
         {
             gameState.IsPaused = false;
+            gameState.Timer.Enabled = true;
             Overlay.Visibility = Visibility.Hidden;
         }
     }
@@ -127,7 +131,9 @@ public partial class MainWindow : Window
     {
         DrawGrid();
         DrawSnakeHead();
-        ScoreText.Text = $"SCORE {gameState.Score}";
+        ScoreText.Text = $"Score {gameState.Score}";
+        MoveText.Text = $"Moves {gameState.Moves}";
+        TimerText.Text = GetTime();
     }
 
     private void DrawGrid()
@@ -179,6 +185,18 @@ public partial class MainWindow : Window
         image.RenderTransform = new RotateTransform(rotation);
     }
 
+    private string GetTime()
+    {
+        string TimeInString = "";
+        int min = gameState.ElapsedTime / 60;
+        int sec = gameState.ElapsedTime % 60;
+
+
+        TimeInString = ((min < 10) ? "0" + min.ToString() : min.ToString());
+        TimeInString += ":" + ((sec < 10) ? "0" + sec.ToString() : sec.ToString());
+        return TimeInString;
+    }
+
     private async Task ShowGameStart()
     {
         for (int i = 3; i >= 1; i--)
@@ -188,8 +206,21 @@ public partial class MainWindow : Window
         }
     }
 
+    private void StartTimer()
+    {
+        gameState.Timer = new System.Timers.Timer();
+        void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            gameState.ElapsedTime++;
+        }
+        gameState.Timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
+        gameState.Timer.Interval = 1000;
+        gameState.Timer.Enabled = true;
+    }
+
     private void PauseGame()
     {
+        gameState.Timer.Enabled = false;
         gameState.IsPaused = true;
         Overlay.Visibility = Visibility.Visible;
         OverlayText.Text = "Press any key to continue.";
