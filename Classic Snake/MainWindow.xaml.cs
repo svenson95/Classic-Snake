@@ -1,15 +1,8 @@
 ﻿using Classic_Snake.classes;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Classic_Snake;
 
@@ -104,16 +97,16 @@ public partial class MainWindow : Window
     }
 
     private async Task GameLoop()
-    {
+    { 
         while (!gameState.IsGameOver)
         {
             await Task.Delay(200);
             if (!gameState.IsPaused)
             {
-            gameState.Move();
-            Draw();
+                gameState.Move();
+                Draw();
+            }
         }
-    }
     }
 
     private Image[,] SetupGrid()
@@ -212,6 +205,6 @@ public partial class MainWindow : Window
         await DrawDeadSnake();
         await Task.Delay(1000);
         Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Press any key to start";
+        OverlayText.Text = "Game Over. Press any key to start again.";
     }
 }
