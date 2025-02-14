@@ -29,7 +29,7 @@ public partial class MainWindow : Window
         Draw();
         await ShowGameStart();
         Overlay.Visibility = Visibility.Hidden;
-        StartTimer();
+        gameState.StartTimer();
 
         await GameLoop();
         await ShowGameOver();
@@ -234,18 +234,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void StartTimer()
-    {
-        gameState.Timer = new System.Timers.Timer();
-        void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            gameState.ElapsedTime++;
-        }
-        gameState.Timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
-        gameState.Timer.Interval = 1000;
-        gameState.Timer.Enabled = true;
-    }
-
     private void PauseGame()
     {
         gameState.Timer.Enabled = false;
@@ -257,6 +245,8 @@ public partial class MainWindow : Window
     private async Task ShowGameOver()
     {
         await DrawDeadSnake();
+        gameState.Timer.Close();
+        gameState.ElapsedTime = 0;
         await Task.Delay(1000);
         Overlay.Visibility = Visibility.Visible;
         OverlayText.Text = "Game Over. Press any key to start again.";

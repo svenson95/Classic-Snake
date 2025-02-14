@@ -1,4 +1,6 @@
-﻿namespace Classic_Snake.classes
+﻿using System.Timers;
+
+namespace Classic_Snake.classes
 {
     public class GameState
     {
@@ -26,6 +28,18 @@
             CurrentDirection = GridDirection.Right;
             AddSnake();
             AddFood();
+        }
+
+        public void StartTimer()
+        {
+            Timer = new System.Timers.Timer();
+            void OnTimedEvent(object source, ElapsedEventArgs e)
+            {
+                ElapsedTime++;
+            }
+            Timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
+            Timer.Interval = 1000;
+            Timer.Enabled = true;
         }
 
         private void AddSnake()
