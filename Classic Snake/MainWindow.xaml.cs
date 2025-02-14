@@ -59,7 +59,7 @@ public partial class MainWindow : Window
         {
             case Key.Escape:
             case Key.Space:
-                TogglePause();
+                PauseGame();
                 break;
             case Key.Left:
             case Key.A:
@@ -96,7 +96,8 @@ public partial class MainWindow : Window
 
         if (gameState.IsPaused)
         {
-            TogglePause();
+            gameState.IsPaused = false;
+            Overlay.Visibility = Visibility.Hidden;
         }
     }
 
@@ -189,20 +190,12 @@ public partial class MainWindow : Window
         }
     }
 
-    private void TogglePause()
-    {
-        if (gameState.IsPaused)
-        {
-            gameState.IsPaused = false;
-            Overlay.Visibility = Visibility.Hidden;
-        }
-        else
+    private void PauseGame()
         {
             gameState.IsPaused = true;
             Overlay.Visibility = Visibility.Visible;
             OverlayText.Text = "Press any key to continue.";
         }
-    }
 
     private async Task ShowGameOver()
     {
