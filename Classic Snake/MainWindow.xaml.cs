@@ -146,7 +146,7 @@ public partial class MainWindow : Window
         DrawGrid();
         DrawSnakeHead();
         ScoreText.Text = $"Score {gameState.Score}";
-        MoveText.Text = $"Moves {gameState.Moves}";
+        SpeedText.Text = GetSpeed();
         TimerText.Text = GetTime();
     }
 
@@ -211,6 +211,20 @@ public partial class MainWindow : Window
         return TimeInString;
     }
 
+    private string GetSpeed()
+    {
+        string Label = "Speed";
+        switch (gameState.MoveDelay)
+        {
+            case 200:
+                return Label + " 50%";
+            case 150:
+                return Label + " 75%";
+            case 100:
+                return Label + " 100%";
+        }
+        return Label;
+    }
     private async Task ShowGameStart()
     {
         for (int i = 3; i >= 1; i--)

@@ -37,10 +37,10 @@
                Margin="20"
                />
 
-            <TextBlock x:Name="MoveText" 
+            <TextBlock x:Name="SpeedText" 
                HorizontalAlignment="Right"
                VerticalAlignment="Center"
-               Text="Moves 0"
+               Text="Speed 50%"
                FontSize="20"
                Margin="20"
                />
